@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>高校数学 - 授業サポートページ</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <!-- EB Garamond (英字セリフ), Shippori Mincho (日本語明朝), Noto Sans JP (本文用) -->
+    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Noto+Sans+JP:wght@300;400;500&family=Shippori+Mincho:wght@400;600&display=swap" rel="stylesheet">
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- MathJax -->
+    <script>
+        MathJax = {
+          tex: {
+            inlineMath: [['$', '$'], ['\\(', '\\)']]
+          }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        body {
+            font-family: 'Noto Sans JP', sans-serif;
+            background-color: #000000; /* 完全な黒 */
+            color: #d1d5db; /* 薄いグレー */
+        }
+        
+        /* 見出し用のフォント設定 */
+        h1, h2, h3, .serif-font {
+            font-family: 'EB Garamond', 'Shippori Mincho', serif;
+        }
+
+        /* 数式フォントの調整（MathJaxとの親和性） */
+        .math-display {
+            font-family: 'Times New Roman', serif;
+        }
+
+        /* タブのアニメーション */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* カスタムスクロールバー */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #444; 
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #666; 
+        }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen selection:bg-indigo-900 selection:text-white">
+
+    <!-- ヘッダー -->
+    <header class="bg-black border-b border-gray-800 sticky top-0 z-50 backdrop-blur-sm bg-opacity-90">
+        <div class="container mx-auto px-6 py-5 flex justify-between items-center">
+            <div class="flex items-center space-x-3 cursor-pointer group" onclick="switchTab('home')">
+                <!-- アイコンをシンプルに -->
+                <i class="fa-solid fa-shapes text-2xl text-gray-400 group-hover:text-white transition-colors duration-300"></i>
+                <div class="flex flex-col">
+                    <h1 class="text-2xl font-medium tracking-widest text-white leading-none serif-font">Mathematics</h1>
+                    <p class="text-[10px] text-gray-500 uppercase tracking-widest mt-1">Classroom Support</p>
+                </div>
+            </div>
+            
+            <!-- PC用ナビゲーション -->
+            <nav class="hidden md:flex space-x-8 text-sm tracking-widest">
+                <button onclick="switchTab('home')" class="nav-btn text-gray-400 hover:text-white transition-colors duration-300 pb-1 border-b border-transparent hover:border-white" data-target="home">HOME</button>
+                <button onclick="switchTab('handouts')" class="nav-btn text-gray-400 hover:text-white transition-colors duration-300 pb-1 border-b border-transparent hover:border-white" data-target="handouts">DOCUMENTS</button>
+                <button onclick="switchTab('videos')" class="nav-btn text-gray-400 hover:text-white transition-colors duration-300 pb-1 border-b border-transparent hover:border-white" data-target="videos">VIDEOS</button>
+                <button onclick="switchTab('elearning')" class="nav-btn text-gray-400 hover:text-white transition-colors duration-300 pb-1 border-b border-transparent hover:border-white" data-target="elearning">E-LEARNING</button>
+            </nav>
+
+            <!-- スマホ用メニューボタン -->
+            <button class="md:hidden text-gray-400 hover:text-white focus:outline-none" onclick="toggleMobileMenu()">
+                <i class="fa-solid fa-bars text-xl"></i>
+            </button>
+        </div>
+
+        <!-- スマホ用ドロップダウンメニュー -->
+        <div id="mobile-menu" class="hidden md:hidden bg-zinc-900 border-b border-gray-800 absolute w-full left-0 top-full">
+            <button onclick="switchTab('home'); toggleMobileMenu()" class="block w-full text-left px-6 py-4 text-gray-300 hover:bg-zinc-800 hover:text-white border-b border-gray-800 text-sm tracking-wider">HOME</button>
+            <button onclick="switchTab('handouts'); toggleMobileMenu()" class="block w-full text-left px-6 py-4 text-gray-300 hover:bg-zinc-800 hover:text-white border-b border-gray-800 text-sm tracking-wider">DOCUMENTS</button>
+            <button onclick="switchTab('videos'); toggleMobileMenu()" class="block w-full text-left px-6 py-4 text-gray-300 hover:bg-zinc-800 hover:text-white border-b border-gray-800 text-sm tracking-wider">VIDEOS</button>
+            <button onclick="switchTab('elearning'); toggleMobileMenu()" class="block w-full text-left px-6 py-4 text-gray-300 hover:bg-zinc-800 hover:text-white text-sm tracking-wider">E-LEARNING</button>
+        </div>
+    </header>
+
+    <!-- メインコンテンツエリア -->
+    <main class="flex-grow container mx-auto px-4 py-12 max-w-5xl">
+
+        <!-- ==================== HOME TAB ==================== -->
+        <div id="home" class="tab-content active">
+            <!-- ヒーローセクション -->
+            <div class="mb-16 text-center">
+                <span class="inline-block py-1 px-3 border border-gray-700 rounded-full text-xs text-gray-400 mb-4 tracking-widest">2024-2025 ACADEMIC YEAR</span>
+                <h2 class="text-4xl md:text-5xl font-medium text-white mb-6 leading-tight serif-font">
+                    The Art of <span class="text-indigo-400 italic">Thinking</span>
+                </h2>
+                <p class="text-gray-400 max-w-2xl mx-auto leading-relaxed font-light">
+                    数学は世界を記述する言語です。<br>
+                    このポータルでは、授業資料のアーカイブ、解説動画、および演習ツールへのアクセスを提供します。
+                    探求の旅をサポートするためのリソースを活用してください。
+                </p>
+            </div>
+
+            <!-- お知らせ（シンプルに） -->
+            <div class="max-w-3xl mx-auto mb-16 border border-gray-800 bg-zinc-900/50 p-6 rounded-sm relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-1 h-full bg-indigo-500"></div>
+                <div class="flex items-start">
+                    <span class="text-indigo-400 text-lg mr-4 mt-0.5"><i class="fa-regular fa-bell"></i></span>
+                    <div>
+                        <h3 class="text-white text-sm font-bold tracking-wide mb-1 serif-font">LATEST NOTICE</h3>
+                        <p class="text-sm text-gray-400">
+                            今週の「数学II」小テスト範囲：教科書 P.42 - P.56 (三角関数)<br>
+                            <span class="text-xs text-gray-600 mt-1 block">2024.11.30 Updated</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- ナビゲーションカード -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-px bg-gray-800 border border-gray-800 rounded-sm overflow-hidden">
+                <!-- Card 1 -->
+                <div onclick="switchTab('handouts')" class="bg-black p-8 group cursor-pointer hover:bg-zinc-900 transition-all duration-500 relative">
+                    <div class="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        <i class="fa-solid fa-arrow-right text-white text-sm"></i>
+                    </div>
+                    <i class="fa-regular fa-file-lines text-2xl text-gray-500 mb-6 group-hover:text-indigo-400 transition-colors"></i>
+                    <h3 class="text-white text-lg font-medium mb-2 serif-font tracking-wide">Documents</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed">授業プリント、演習問題、<br>模範解答のPDFアーカイブ。</p>
+                </div>
+
+                <!-- Card 2 -->
+                <div onclick="switchTab('videos')" class="bg-black p-8 group cursor-pointer hover:bg-zinc-900 transition-all duration-500 relative">
+                    <div class="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        <i class="fa-solid fa-arrow-right text-white text-sm"></i>
+                    </div>
+                    <i class="fa-solid fa-play text-2xl text-gray-500 mb-6 group-hover:text-indigo-400 transition-colors"></i>
+                    <h3 class="text-white text-lg font-medium mb-2 serif-font tracking-wide">Archives</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed">授業録画および<br>重要単元の解説動画。</p>
+                </div>
+
+                <!-- Card 3 -->
+                <div onclick="switchTab('elearning')" class="bg-black p-8 group cursor-pointer hover:bg-zinc-900 transition-all duration-500 relative">
+                    <div class="absolute top-0 right-0 p-4 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
+                        <i class="fa-solid fa-arrow-right text-white text-sm"></i>
+                    </div>
+                    <i class="fa-solid fa-laptop text-2xl text-gray-500 mb-6 group-hover:text-indigo-400 transition-colors"></i>
+                    <h3 class="text-white text-lg font-medium mb-2 serif-font tracking-wide">E-Learning</h3>
+                    <p class="text-xs text-gray-500 leading-relaxed">GeoGebra、Google Forms等の<br>デジタルツール。</p>
+                </div>
+            </div>
+            
+            <!-- 今週の数式 -->
+            <div class="mt-24 text-center">
+                <p class="text-xs text-gray-600 tracking-[0.2em] mb-4 uppercase">Today's Beauty</p>
+                <div class="text-2xl md:text-3xl text-gray-300 font-serif opacity-80">
+                    $$ e^{i\pi} + 1 = 0 $$
+                </div>
+            </div>
+        </div>
+
+        <!-- ==================== HANDOUTS TAB ==================== -->
+        <div id="handouts" class="tab-content">
+            <header class="mb-10 pb-4 border-b border-gray-800 flex justify-between items-end">
+                <div>
+                    <h2 class="text-3xl text-white serif-font mb-1">Documents</h2>
+                    <p class="text-gray-500 text-sm font-light">授業配布資料・演習プリント</p>
+                </div>
+            </header>
+
+            <div class="space-y-12">
+                <!-- セクション: 数学 I -->
+                <section>
+                    <h3 class="text-indigo-400 text-sm font-bold tracking-widest mb-6 uppercase flex items-center">
+                        <span class="w-2 h-2 bg-indigo-500 rounded-full mr-3"></span>Mathematics I
+                    </h3>
+                    <div class="grid gap-4">
+                        <!-- アイテム -->
+                        <div class="group bg-zinc-900/30 border border-gray-800 p-4 flex items-center justify-between hover:bg-zinc-900 hover:border-gray-700 transition duration-300">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 flex items-center justify-center bg-black border border-gray-800 text-gray-400">
+                                    <span class="text-xs font-serif">PDF</span>
+                                </div>
+                                <div>
+                                    <h4 class="text-gray-200 font-medium group-hover:text-white transition-colors">No.12 2次関数の最大・最小</h4>
+                                    <p class="text-xs text-gray-600 mt-1 font-mono">2023.11.15 | 245KB</p>
+                                </div>
+                            </div>
+                            <a href="#" class="text-gray-500 hover:text-indigo-400 px-4 py-2 text-sm transition-colors">
+                                <i class="fa-solid fa-download"></i>
+                            </a>
+                        </div>
+
+                        <div class="group bg-zinc-900/30 border border-gray-800 p-4 flex items-center justify-between hover:bg-zinc-900 hover:border-gray-700 transition duration-300">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 flex items-center justify-center bg-black border border-gray-800 text-gray-400">
+                                    <span class="text-xs font-serif">PDF</span>
+                                </div>
+                                <div>
+                                    <h4 class="text-gray-200 font-medium group-hover:text-white transition-colors">No.13 2次不等式の解法パターン</h4>
+                                    <p class="text-xs text-gray-600 mt-1 font-mono">2023.11.18 | 180KB</p>
+                                </div>
+                            </div>
+                            <a href="#" class="text-gray-500 hover:text-indigo-400 px-4 py-2 text-sm transition-colors">
+                                <i class="fa-solid fa-download"></i>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- セクション: 数学 A -->
+                <section>
+                    <h3 class="text-indigo-400 text-sm font-bold tracking-widest mb-6 uppercase flex items-center">
+                        <span class="w-2 h-2 bg-indigo-500 rounded-full mr-3"></span>Mathematics A
+                    </h3>
+                    <div class="grid gap-4">
+                        <div class="group bg-zinc-900/30 border border-gray-800 p-4 flex items-center justify-between hover:bg-zinc-900 hover:border-gray-700 transition duration-300">
+                            <div class="flex items-center space-x-4">
+                                <div class="w-10 h-10 flex items-center justify-center bg-black border border-gray-800 text-gray-400">
+                                    <span class="text-xs font-serif">PDF</span>
+                                </div>
+                                <div>
+                                    <h4 class="text-gray-200 font-medium group-hover:text-white transition-colors">演習：条件付き確率</h4>
+                                    <p class="text-xs text-gray-600 mt-1 font-mono">2023.11.20 | 320KB</p>
+                                </div>
+                            </div>
+                            <a href="#" class="text-gray-500 hover:text-indigo-400 px-4 py-2 text-sm transition-colors">
+                                <i class="fa-solid fa-download"></i>
+                            </a>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+
+        <!-- ==================== VIDEOS TAB ==================== -->
+        <div id="videos" class="tab-content">
+            <header class="mb-10 pb-4 border-b border-gray-800 flex justify-between items-end">
+                <div>
+                    <h2 class="text-3xl text-white serif-font mb-1">Video Archives</h2>
+                    <p class="text-gray-500 text-sm font-light">解説動画・授業録画</p>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                
+                <!-- 動画カード -->
+                <div class="group cursor-pointer">
+                    <div class="relative aspect-video bg-zinc-900 border border-gray-800 mb-4 overflow-hidden">
+                        <!-- Overlay -->
+                        <div class="absolute inset-0 bg-black/50 group-hover:bg-black/20 transition-all duration-500 flex items-center justify-center">
+                            <div class="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                                <i class="fa-solid fa-play text-white text-sm ml-1"></i>
+                            </div>
+                        </div>
+                        <!-- Thumbnail placeholder -->
+                        <div class="w-full h-full bg-gradient-to-br from-gray-800 to-black"></div>
+                        <div class="absolute bottom-2 right-2 px-1.5 py-0.5 bg-black/80 text-[10px] text-white font-mono">14:20</div>
+                    </div>
+                    <div class="pr-2">
+                        <span class="text-[10px] font-bold text-indigo-400 tracking-wider mb-1 block uppercase">Math II</span>
+                        <h3 class="text-white text-base font-serif leading-snug group-hover:text-indigo-300 transition-colors">三角関数の合成（基本編）</h3>
+                        <p class="text-xs text-gray-500 mt-2 line-clamp-2">合成公式の導出プロセスと、実際の計算における注意点を解説します。</p>
+                    </div>
+                </div>
+
+                <!-- 動画カード -->
+                <div class="group cursor-pointer">
+                    <div class="relative aspect-video bg-zinc-900 border border-gray-800 mb-4 overflow-hidden">
+                        <div class="absolute inset-0 bg-black/50 group-hover:bg-black/20 transition-all duration-500 flex items-center justify-center">
+                            <div class="w-12 h-12 rounded-full border border-white/30 flex items-center justify-center backdrop-blur-sm group-hover:scale-110 transition-transform duration-300">
+                                <i class="fa-solid fa-play text-white text-sm ml-1"></i>
+                            </div>
+                        </div>
+                        <div class="w-full h-full bg-gradient-to-br from-gray-800 to-black"></div>
+                        <div class="absolute bottom-2 right-2 px-1.5 py-0.5 bg-black/80 text-[10px] text-white font-mono">22:15</div>
+                    </div>
+                    <div class="pr-2">
+                        <span class="text-[10px] font-bold text-indigo-400 tracking-wider mb-1 block uppercase">Math B</span>
+                        <h3 class="text-white text-base font-serif leading-snug group-hover:text-indigo-300 transition-colors">数列の和（Σ計算の工夫）</h3>
+                        <p class="text-xs text-gray-500 mt-2 line-clamp-2">部分分数分解などのテクニックを用いたΣ計算の解法パターン。</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ==================== E-LEARNING TAB ==================== -->
+        <div id="elearning" class="tab-content">
+            <header class="mb-10 pb-4 border-b border-gray-800 flex justify-between items-end">
+                <div>
+                    <h2 class="text-3xl text-white serif-font mb-1">E-Learning</h2>
+                    <p class="text-gray-500 text-sm font-light">学習支援ツール・確認テスト</p>
+                </div>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+                <!-- ツールカード -->
+                <a href="#" class="block p-6 bg-zinc-900/30 border border-gray-800 hover:border-indigo-500/50 hover:bg-zinc-900 transition-all duration-300 group">
+                    <div class="flex justify-between items-start mb-4">
+                        <i class="fa-solid fa-list-check text-2xl text-gray-600 group-hover:text-indigo-400 transition-colors"></i>
+                        <span class="text-xs font-mono text-gray-600 border border-gray-800 px-2 py-1">FORM</span>
+                    </div>
+                    <h3 class="text-lg text-white font-serif mb-2">週末課題確認テスト</h3>
+                    <p class="text-sm text-gray-500 mb-4">第4章「データの分析」に関する理解度確認テスト。日曜23:59締切。</p>
+                    <div class="text-xs text-indigo-400 flex items-center">
+                        OPEN LINK <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </a>
+
+                <a href="https://www.geogebra.org/calculator" target="_blank" class="block p-6 bg-zinc-900/30 border border-gray-800 hover:border-indigo-500/50 hover:bg-zinc-900 transition-all duration-300 group">
+                    <div class="flex justify-between items-start mb-4">
+                        <i class="fa-solid fa-calculator text-2xl text-gray-600 group-hover:text-indigo-400 transition-colors"></i>
+                        <span class="text-xs font-mono text-gray-600 border border-gray-800 px-2 py-1">TOOL</span>
+                    </div>
+                    <h3 class="text-lg text-white font-serif mb-2">GeoGebra Graphing</h3>
+                    <p class="text-sm text-gray-500 mb-4">関数グラフの描画シミュレーター。軌跡や領域の確認に使用してください。</p>
+                    <div class="text-xs text-indigo-400 flex items-center">
+                        OPEN TOOL <i class="fa-solid fa-arrow-right ml-2 group-hover:translate-x-1 transition-transform"></i>
+                    </div>
+                </a>
+            </div>
+
+            <!-- LaTeX Demo -->
+            <div class="border-t border-gray-800 pt-8">
+                <h3 class="text-gray-400 text-xs tracking-widest uppercase mb-4">LaTeX Rendering Test</h3>
+                <div class="bg-zinc-900 p-8 border border-gray-800 text-center">
+                    <div class="text-xl text-gray-300 font-serif overflow-x-auto">
+                        $$ \int_{-\infty}^{\infty} e^{-x^2} dx = \sqrt{\pi} $$
+                    </div>
+                    <p class="text-xs text-gray-600 mt-4 font-mono">Gaussian Integral</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- フッター -->
+    <footer class="bg-black border-t border-gray-900 text-gray-600 py-12 mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <div class="mb-6">
+                <span class="text-lg text-gray-400 tracking-widest serif-font">Mathematics Classroom</span>
+            </div>
+            <div class="flex justify-center space-x-6 mb-8 text-sm">
+                <a href="#" class="hover:text-indigo-400 transition-colors">Syllabus</a>
+                <a href="#" class="hover:text-indigo-400 transition-colors">Contact</a>
+                <a href="#" class="hover:text-indigo-400 transition-colors">School HP</a>
+            </div>
+            <p class="text-xs font-mono text-gray-700">
+                &copy; 2024 High School Mathematics Dept.
+            </p>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script>
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(content => {
+                content.classList.remove('active');
+                
+                // フェードインアニメーションをリセットするためにクラスを付け直す
+                if(content.id === tabId) {
+                    // 少し遅延させるとアニメーションが綺麗にかかることがあるが、
+                    // ここではdisplay:blockの直後にアニメーションが走るようにCSSで制御
+                }
+            });
+            
+            const target = document.getElementById(tabId);
+            if(target) {
+                target.classList.add('active');
+            }
+
+            // ナビゲーションのスタイル更新
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if(btn.dataset.target === tabId) {
+                    btn.classList.add('text-white', 'border-white');
+                    btn.classList.remove('text-gray-400', 'border-transparent');
+                } else {
+                    btn.classList.remove('text-white', 'border-white');
+                    btn.classList.add('text-gray-400', 'border-transparent');
+                }
+            });
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        window.onload = function() {
+            const hash = window.location.hash.replace('#', '');
+            if(hash && document.getElementById(hash)) {
+                switchTab(hash);
+            } else {
+                // デフォルトでホームのナビゲーションをアクティブに
+                switchTab('home');
+            }
+        };
+    </script>
+</body>
+</html>
